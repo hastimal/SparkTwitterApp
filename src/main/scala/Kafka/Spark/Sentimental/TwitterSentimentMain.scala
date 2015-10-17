@@ -1,3 +1,5 @@
+package Kafka.Spark.Sentimental
+
 import org.apache.spark.SparkConf
 import org.apache.spark.streaming.dstream.DStream
 import org.apache.spark.streaming.twitter.TwitterUtils
@@ -8,6 +10,7 @@ import org.apache.spark.streaming.{Seconds, StreamingContext}
 object TwitterSentimentMain {
 
   def main(args: Array[String]) {
+    System.setProperty("hadoop.home.dir","F:\\winutils")
   //From MainClass.scala
   val filters = Array("food", "nutrition", "diet", "healthy", "diseasefree", "physician")
     val sentimentAnalyzer: SentimentAnalyzer = new SentimentAnalyzer
@@ -28,11 +31,13 @@ object TwitterSentimentMain {
     // For more master configuration see  https://spark.apache.org/docs/1.2.0/submitting-applications.html#master-urls
     val sparkConf = new SparkConf().setAppName("SparkTwitterApp").setMaster("local[*]")
     //Create a Streaming Context with 2 second window
-    val ssc = new StreamingContext(sparkConf, Seconds(2))
+    val ssc = new StreamingContext(sparkConf, Seconds(5))
     //Using the streaming context, open a twitter stream (By the way you can also use filters)
     //Stream generates a series of random tweets
     val stream = TwitterUtils.createStream(ssc, None, filters)
-    //  stream.print()
+    stream.print()
+    stream.filter(t => (t.toString.length> 0)).saveAsTextFiles("src/main/resources/output/TwitterSentimentaAnalysis.txt", "data")
+    //stream.saveAsTextFiles("src/main/resources/outputFile/TwitterSentimentaAnalysis","data")
 
     val sentiment:DStream[TweetWithSentiment]=stream.map{Status=>{
       val st=Status.getText()
@@ -41,6 +46,7 @@ object TwitterSentimentMain {
       tw
     }
     }
+
 
 
     val res = sentiment.foreachRDD{

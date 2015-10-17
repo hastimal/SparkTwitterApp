@@ -1,3 +1,5 @@
+package Kafka.Spark.Sentimental;
+
 /**
  * Created by hastimal on 9/28/2015.
  */
@@ -27,7 +29,7 @@ public class TweetWithSentiment {
 
     @Override
     public String toString() {
-        return "TweetWithSentiment [line=" + line + ", cssClass=" + cssClass + "]";
+        return "Kafka.Spark.Sentimental.TweetWithSentiment [line=" + line + ", cssClass=" + cssClass + "]";
     }
 
 }

@@ -1,5 +1,7 @@
-import java.io.{PrintStream, IOException}
-import java.net.{Socket, InetAddress}
+package Kafka.Spark.Sentimental
+
+import java.io.{IOException, PrintStream}
+import java.net.{InetAddress, Socket}
 /**
  * Created by hastimal on 9/28/2015.
  */
